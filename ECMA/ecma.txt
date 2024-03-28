@@ -28,7 +28,7 @@ jab promise fullfill hota hai
 or ager rej hojai to 
 .catch
 
-// Destructuring 
+// Destructuring //
 array , obj per chalta hai
 
 
