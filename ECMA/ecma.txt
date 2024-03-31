@@ -24,18 +24,25 @@ res
 rej
 
 jab promise fullfill hota hai 
-.then 
+.then ka function call hota hai 
 or ager rej hojai to 
-.catch
+.catch ka function call hota hai 
 
-// Destructuring //
+// Destructuring 
 array , obj per chalta hai
+
 asyn //
 async function sa pehla lagta hai aur ya promise return karta ha i
+
 await 
 await asyn function ka ander chalta hai 
+
 strict mode 
 error btata hai wo error jo hama browzer nhi bta ta isa use karna ka lya "use strict" js ki file mai top pa lagata hai 
+
+map array ko print karta hai
+filter filter karka data 
+reduce sari value ko add karta ha 
 
 
 
