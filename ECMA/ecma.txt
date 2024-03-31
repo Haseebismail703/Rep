@@ -30,6 +30,12 @@ or ager rej hojai to
 
 // Destructuring //
 array , obj per chalta hai
+asyn //
+async function sa pehla lagta hai aur ya promise return karta ha i
+await 
+await asyn function ka ander chalta hai 
+strict mode 
+error btata hai wo error jo hama browzer nhi bta ta isa use karna ka lya "use strict" js ki file mai top pa lagata hai 
 
 
 
