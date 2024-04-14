@@ -43,7 +43,7 @@ error btata hai wo error jo hama browzer nhi bta ta isa use karna ka lya "use st
 map array ko print karta hai
 filter filter karka data 
 reduce sari value ko add karta ha 
-nexxt react
+next react
 
 
 
