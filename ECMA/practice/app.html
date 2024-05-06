@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Hierarchy Tree</title>
+    <style>
+        /* Styles for the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+
+        /* Styles for the tree graph */
+        .tree-graph {
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>All Employees</h2>
+
+<!-- Table from Task 2 -->
+<table id="employeeTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Supervisor</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Employee data will be dynamically inserted here -->
+        <tr data-id="1">
+            <td>John Doe</td>
+            <td>Manager</td>
+            <td>Jane Smith</td>
+        </tr>
+        <tr data-id="2">
+            <td>Alice Johnson</td>
+            <td>Developer</td>
+            <td>John Doe</td>
+        </tr>
+        <!-- Add more rows as needed -->
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Employee Hierarchy Tree</h2>
+        <div id="treeGraph" class="tree-graph"></div>
+    </div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+    // Dummy data for testing
+    var employees = [
+        { id: 1, name: "John Doe", position: "Manager", supervisor: "Jane Smith" },
+        { id: 2, name: "Alice Johnson", position: "Developer", supervisor: "John Doe" },
+        // Add more dummy data as needed
+    ];
+
+    // Function to generate hierarchy tree graph
+    function generateTreeGraph(employeeId) {
+        var selectedEmployee = employees.find(emp => emp.id === employeeId);
+        var treeData = {
+            name: selectedEmployee.name,
+            children: []
+        };
+
+        // Find subordinates
+        var subordinates = employees.filter(emp => emp.supervisor === selectedEmployee.name);
+        subordinates.forEach(sub => {
+            treeData.children.push({ name: sub.name });
+        });
+
+        // Generate tree layout
+        var margin = { top: 20, right: 90, bottom: 30, left: 90 };
+        var width = 600 - margin.left - margin.right;
+        var height = 300 - margin.top - margin.bottom;
+
+        var svg = d3.select("#treeGraph").append("svg")
+            .attr("width", width + margin.right + margin.left)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var tree = d3.tree().size([height, width]);
+        var root = d3.hierarchy(treeData);
+        tree(root);
+
+        var link = svg.selectAll(".link")
+            .data(root.links())
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", d3.linkHorizontal()
+                .x(d => d.y)
+                .y(d => d.x));
+
+        var node = svg.selectAll(".node")
+            .data(root.descendants())
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", d => "translate(" + d.y + "," + d.x + ")");
+
+        node.append("circle")
+            .attr("r", 5);
+
+        node.append("text")
+            .attr("dy", ".31em")
+            .attr("x", d => d.children ? -13 : 13)
+            .style("text-anchor", d => d.children ? "end" : "start")
+            .text(d => d.data.name);
+    }
+
+    // Show modal and generate tree graph on row click
+    var rows = document.querySelectorAll("#employeeTable tbody tr");
+    rows.forEach(row => {
+        row.addEventListener("click", function() {
+            var employeeId = parseInt(this.getAttribute("data-id"));
+            document.getElementById("myModal").style.display = "block";
+            generateTreeGraph(employeeId);
+        });
+    });
+
+    // Close modal when clicking on the close button
+    var closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", function() {
+        document.getElementById("myModal").style.display = "none";
+        // Clear the tree graph
+        document.getElementById("treeGraph").innerHTML = "";
+    });
+
+    // Close modal when clicking outside the modal content
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+            // Clear the tree graph
+            document.getElementById("treeGraph").innerHTML = "";
+        }
+    };
+</script>
+
+</body>
+</html>
