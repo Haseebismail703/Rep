@@ -45,7 +45,6 @@ filter filter karka data hai Array ko
 reduce sari value ko add karta ha 
 // next react 
 // exprees js
-// ts
 
 
 
