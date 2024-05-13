@@ -38,4 +38,4 @@ Controlled components are components whose form elements are controlled by React
 5 Which method is used to render a React component to the DOM?
  ReactDOM.render() 
  What is the purpose of the useParams hook in React Router? 
-c) To extract URL parameters from a route 
+c) To extract URL parameters from a route route
